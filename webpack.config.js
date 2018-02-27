@@ -8,6 +8,13 @@ module.exports = {
         // publicPath: "/dist",
         filename: "bundle.js"
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: 'index.html',
+            inject: 'body',
+        })
+    ],
     module: {
         rules: [
             // 配置的是用来解析.css文件的loader(style-loader和css-loader)
@@ -48,8 +55,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 // Webpack2建议尽量避免exclude，更倾向于使用include
-                // exclude: /(node_modules)/, // node_modules下面的.js文件会被排除
-                include: [path.resolve(__dirname, 'src')],
+                exclude: /(node_modules)/, // node_modules下面的.js文件会被排除
+                // include: [path.resolve(__dirname, 'src')],
                 use: {
                     loader: 'babel-loader'
                 }
@@ -60,10 +67,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: 'template.html'
-        })
-    ]
+    
 }
