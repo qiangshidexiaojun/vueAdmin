@@ -6,13 +6,13 @@ module.exports = {
     output: {
         path: path.join(__dirname, "dist"),
         // publicPath: "/dist",
-        filename: "bundle.js"
+        filename: "bundle_[chunkhash:8].js"//每次运行都生成一个随机名,确保不会缓存
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
             filename: 'index.html',
-            inject: 'body',
+            inject: 'body',// 自动注入js到什么地方
         })
     ],
     module: {
@@ -23,6 +23,7 @@ module.exports = {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'] //webpack底层调用这些包的顺序是从右到左
             },
+            // 解析less规则的
             {
                 test: /\.less$/,
                 use: [{
@@ -33,6 +34,7 @@ module.exports = {
                     loader: 'less-loader'
                 }]
             },
+            //解析scss规则的
             {
                 test: /\.scss$/,
                 use: [{
@@ -43,6 +45,7 @@ module.exports = {
                     loader: 'sass-loader'
                 }]
             },
+            /* 解析字体图标的 */
             {
                 test: /\.(png|jpg|gif|eot|svg|ttf|woff|woff2)/,
                 use: [{
@@ -52,6 +55,7 @@ module.exports = {
                     }
                 }]
             },
+            /* babel打包js的 */
             {
                 test: /\.js$/,
                 // Webpack2建议尽量避免exclude，更倾向于使用include
@@ -61,11 +65,11 @@ module.exports = {
                     loader: 'babel-loader'
                 }
             },
+            /* 解析vue单文件的 */
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
             }
         ]
     },
-    
 }
