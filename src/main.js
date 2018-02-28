@@ -10,6 +10,8 @@ import 'normalize.css'//引入初始化样式库
 import axios from "axios"//引入axios类库
 import api, { domain } from "./js/api.js"//加载变量
 
+import "./less/index.less" //引入全局less
+
 // 配置默认域名, 这样请求的时候就不用在url里加域名了
 axios.defaults.baseURL = domain;
 // 我们是跨域请求的接口, 默认不会携带cookie等信息, 后端需要这些信息来判断登陆状态, 所以要设为true

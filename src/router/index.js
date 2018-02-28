@@ -7,7 +7,7 @@ import Shopcart from "../component/admin/shopcart/Shopcart.vue"//引入login组�
 /* 使用路由 */
 Vue.use(VueRouter)
 
-const shopcart = [{ name: "shopcart", path: 'shopcart', component: Shopcart }]
+const shopcart = [{ name: "shopcart", path: 'shopcart', component: Shopcart }];
 
 /* 暴露路由 */
 export default new VueRouter({
