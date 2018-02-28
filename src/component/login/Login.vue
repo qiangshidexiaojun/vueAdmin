@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { Message } from "element-ui";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -47,10 +48,20 @@ export default {
     login() {
       this.$http.post(this.$api.login, this.ruleForm2).then(res => {
         if (!res.data.status) {
-          this.open("登录成功！", "success");
+          Message.success({
+            message: "登录成功！",
+            type: "success",
+            duration: 1000
+          });
+          localStorage.setItem("uname", res.data.message.uname);
+          /* 路由跳转，也可以使用replace */
           this.$router.push({ name: "admin" });
         } else {
-          this.open(res.data.message, "error");
+          Message.success({
+            message: res.data.message,
+            type: "error",
+            duration: 1000
+          });
         }
       });
     },
@@ -59,20 +70,17 @@ export default {
         if (valid) {
           this.login();
         } else {
-          this.open("登录失败！", "error");
+          Message.success({
+            message: "登录失败！",
+            type: "error",
+            duration: 1000
+          });
           return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    open(msg, type) {
-      this.$message({
-        showClose: true,
-        message: msg,
-        type: type
-      });
     }
   }
 };

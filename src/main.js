@@ -27,3 +27,24 @@ new Vue({
     render: createElement => createElement(App),
     router: vueRouter //注入路由      
 })
+
+vueRouter.beforeEach((to, from, next) => {
+    /* to要进入的路由 */
+    /* from要离开的路由 */
+    /* next调用这个方法才能执行后续操作 */
+    /* console.log(to);
+    console.log(from);
+    console.log(next);
+    next(); */
+    axios.get(api.islogin).then(res => {
+        if (to.path == "/login"){
+            next();
+        }  
+        if (to.path == "/admin" && from.path == "/login"){
+            location.href = "http://localhost:8080/#/login";
+        }
+        if (res.data.code == "logined") {
+            next();
+        } 
+    });
+})
