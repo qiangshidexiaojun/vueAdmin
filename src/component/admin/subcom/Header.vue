@@ -1,5 +1,7 @@
 <template>
   <div class="appHeader">
+    <img src="../../../assets/logo.png" alt="">
+    <i class="el-icon-menu" @click="toggle()"></i>
     <div class="appMessage">{{msg}}</div>
     <el-dropdown @command="handleClick">
       <span class="el-dropdown-link">
@@ -20,10 +22,20 @@ import { Message } from "element-ui";
 export default {
   data() {
     return {
-      msg: "你好，" + localStorage.getItem("uname")
+      msg: "你好，" + localStorage.getItem("uname"),
+      width: 200
     };
   },
+  mounted() {
+    document.querySelector("img").style.width = this.width + "px";
+  },
   methods: {
+    toggle() {
+        document.querySelector("img").style.width = document.querySelector("img").style.width == "200px" ? "64px" : "200px";
+      /* dispatch派遣请求对应的action会接收到 */
+      this.$store.dispatch("increment");
+      this.$store.dispatch("changeWidth");
+    },
     handleClick(command) {
       /* 单击注销登录 */
       if (command == "logout") {
@@ -47,6 +59,23 @@ export default {
 
 <style scoped lang="less">
 .appHeader {
+  border-bottom: 2px solid #eee;
+  img {
+    float: left;
+    height: 42px;
+    // width: 200px;
+    transition: width 0.5s;
+  }
+  > i {
+    width: 42px;
+    height: 42px;
+    font-size: 24px;
+    text-align: center;
+    line-height: 42px;
+    border-right: 2px solid #eeeeee;
+    float: left;
+    cursor: pointer;
+  }
   .appMessage {
     display: inline-block;
     padding-right: 10px;
@@ -59,7 +88,7 @@ export default {
     i {
       font-size: 20px;
     }
-    span{
+    span {
       display: block;
       width: 100%;
       height: 100%;

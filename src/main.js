@@ -12,6 +12,10 @@ import api, { domain } from "./js/api.js"//加载变量
 
 import "./less/index.less" //引入全局less
 
+import Vuex from "vuex" //引入组件通信管理插件
+
+import { store } from './js/store.js' // 使用{}引入store实例，因为store是一个const变量
+
 // 配置默认域名, 这样请求的时候就不用在url里加域名了
 axios.defaults.baseURL = domain;
 // 我们是跨域请求的接口, 默认不会携带cookie等信息, 后端需要这些信息来判断登陆状态, 所以要设为true
@@ -25,7 +29,8 @@ Vue.use(ElementUI)
 new Vue({
     el: "#app",
     render: createElement => createElement(App),
-    router: vueRouter //注入路由      
+    router: vueRouter, //注入路由 
+    store
 })
 
 vueRouter.beforeEach((to, from, next) => {

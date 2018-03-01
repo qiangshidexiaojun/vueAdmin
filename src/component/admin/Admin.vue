@@ -4,7 +4,7 @@
       <app-header></app-header>
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside :width="width">
         <app-aside></app-aside>
       </el-aside>
       <el-main>
@@ -22,6 +22,11 @@ export default {
   components: {
     appHeader: Header,
     appAside: Aside
+  },
+  computed: {
+    width(){
+      return this.$store.getters.width + "px";
+    }
   }
 };
 </script>
@@ -30,15 +35,18 @@ export default {
 .el-container {
   height: 100%;
   .el-header {
-    line-height: 60px;
+    height: 42px!important;
+    line-height: 42px;
     color: #686f92;
     text-align: right;
+    padding-left: 0;
   }
   .el-container {
     height: 100%;
   }
   .el-aside {
-    background-color: red;
+    background-color: #267cb7;
+    transition: width 0.5s;
   }
   
 }

@@ -8,7 +8,7 @@
           <el-input type="text" v-model="ruleForm2.uname" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="upwd">
-          <el-input type="password" v-model="ruleForm2.upwd" auto-complete="off"></el-input>
+          <el-input type="password" v-model="ruleForm2.upwd" @keyup.native="checkLogin($event)" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button :plain="true" type="success" @click="submitForm('ruleForm2')">登录</el-button>
@@ -45,21 +45,24 @@ export default {
     };
   },
   methods: {
+    checkLogin(e){
+      if(e.keyCode == 13){
+        this.login();
+      }
+    },
     login() {
       this.$http.post(this.$api.login, this.ruleForm2).then(res => {
         if (!res.data.status) {
           Message.success({
             message: "登录成功！",
-            type: "success",
             duration: 1000
           });
           localStorage.setItem("uname", res.data.message.uname);
           /* 路由跳转，也可以使用replace */
           this.$router.push({ name: "admin" });
         } else {
-          Message.success({
+          Message.error({
             message: res.data.message,
-            type: "error",
             duration: 1000
           });
         }
@@ -70,9 +73,8 @@ export default {
         if (valid) {
           this.login();
         } else {
-          Message.success({
+          Message.error({
             message: "登录失败！",
-            type: "error",
             duration: 1000
           });
           return false;
