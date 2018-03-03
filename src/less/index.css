@@ -44,4 +44,9 @@ main .mainContent .el-table .success-row {
 main .mainContent .cell {
   text-align: center;
 }
+main .mainContent .cell a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
 /*# sourceMappingURL=./index.css.map */

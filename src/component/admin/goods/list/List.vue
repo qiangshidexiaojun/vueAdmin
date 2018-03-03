@@ -3,32 +3,32 @@
         <section class="contentHeader">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/admin' }">知识内容</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{path: '/admin/student'}">首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{path: '/admin/goods'}">首页</el-breadcrumb-item>
                 <el-breadcrumb-item class="item-action">内容管理</el-breadcrumb-item>
             </el-breadcrumb>
         </section>
         <section class="contentBtn">
             <el-button plain icon="el-icon-plus" size="mini">新增</el-button>
-            <el-button plain icon="el-icon-check" size="mini">全选</el-button>
+            <el-button plain icon="el-icon-check" @click="all()" size="mini">全选</el-button>
             <el-button plain icon="el-icon-close" @click="open()" size="mini">删除</el-button>
             <el-input class="content_btn_search" @input="search()" v-model="apiQuery.searchvalue" placeholder="请输入搜索内容" prefix-icon="el-icon-search">
             </el-input>
         </section>
         <section class="mainContent">
             <template>
-                <el-table :data="tableData2" style="width: 100%;" max-height="370" :row-class-name="tableRowClassName" @selection-change="selector">
+                <el-table :data="tableData2" style="width: 100%;" max-height="350" :row-class-name="tableRowClassName" @selection-change="selector">
                     <el-table-column width="50" type="selection">
                     </el-table-column>
                     <el-table-column label="标题">
                         <template slot-scope="scope">
-                            <el-tooltip placement="top">
+                            <el-tooltip placement="right" :open-delay="500">
                                 <router-link :to="{path: `/admin/goods/detailList/${scope.row.id}`}">
                                     {{scope.row.title}}
                                 </router-link>
                                 <div slot="content">
                                     <p>商品货号{{scope.row.goods_no}}</p>
                                     <p>交易积分{{scope.row.point}}</p>
-                                    <img style="width: 200px;" :src="scope.row.imgurl" alt="商品图片">
+                                    <img style="width: 200px;" :src="`${scope.row.imgurl}`" alt="商品图片">
                                 </div>
                             </el-tooltip>
                         </template>
@@ -64,6 +64,10 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <div class="block">
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="apiQuery.pageIndex" :page-sizes="[2, 4, 6, 8]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="apiQuery.totalcount">
+                    </el-pagination>
+                </div>
             </template>
         </section>
     </div>
@@ -73,6 +77,14 @@
 import { Message } from "element-ui";
 export default {
   methods: {
+    handleSizeChange(val) {
+      this.apiQuery.pageSize = val;
+      this.getGoodsList();
+    },
+    handleCurrentChange(val) {
+      this.apiQuery.pageIndex = val;
+      this.getGoodsList();
+    },
     //* 改变行的颜色 */
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 != 0) {
@@ -90,6 +102,7 @@ export default {
       this.$http.get(this.$api.gsList + api).then(res => {
         if (res.status == 200) {
           this.tableData2 = res.data.message;
+          this.apiQuery.totalcount = res.data.totalcount;
         }
       });
     },
@@ -121,6 +134,10 @@ export default {
         });
       }
     },
+    /* 点击全选 */
+    all() {
+      document.querySelector(".el-checkbox__original").click();
+    },
     /* 刪除提示框 */
     open() {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -149,8 +166,9 @@ export default {
       /* 商品查询数据 */
       apiQuery: {
         pageIndex: 1,
-        pageSize: 10,
-        searchvalue: ""
+        pageSize: 2,
+        searchvalue: "",
+        totalcount: 0
       },
       /* 商品选中数据 */
       selected: []
@@ -180,6 +198,9 @@ export default {
   }
   i[class$="active"] {
     color: #000;
+  }
+  .block{
+      padding-top: 6px;
   }
 }
 </style>
