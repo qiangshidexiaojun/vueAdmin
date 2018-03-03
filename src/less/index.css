@@ -9,7 +9,7 @@ a {
   text-decoration: none;
 }
 .aside {
-  overflow: auto;
+  overflow: hidden;
 }
 .aside .el-menu {
   border-right: 0;
@@ -17,5 +17,32 @@ a {
 .aside .el-menu-item-group__title {
   padding: 0;
   height: 0;
+}
+.aside .el-submenu__title i {
+  color: #fff;
+}
+main .contentHeader {
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #eee;
+}
+main .contentHeader .item-action .el-breadcrumb__inner {
+  color: #a4a8be;
+}
+main .contentBtn i {
+  font-size: 14px;
+  font-weight: bold;
+}
+main .contentBtn span {
+  font-size: 14px;
+}
+main .mainContent .el-table .warning-row {
+  background: oldlace;
+}
+main .mainContent .el-table .success-row {
+  background: #f0f9eb;
+}
+main .mainContent .cell {
+  text-align: center;
+  color: #000;
 }
 /*# sourceMappingURL=./index.css.map */

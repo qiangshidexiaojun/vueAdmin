@@ -14,12 +14,48 @@ a {
 // 左侧导航
 .aside {
     // 文本超出不出现滚动条
-    overflow: auto; // 去掉导航右边框
+    overflow: hidden; // 去掉导航右边框
     .el-menu {
         border-right: 0;
     } // 去掉导航子标题高度
     .el-menu-item-group__title {
         padding: 0;
         height: 0;
+    } //箭头
+    .el-submenu__title i {
+        color: #fff;
+    }
+}
+
+main {
+    .contentHeader {
+        padding: 0 0 10px 0;
+        border-bottom: 1px solid #eee;
+        .item-action {
+            .el-breadcrumb__inner {
+                color: #a4a8be;
+            }
+        }
+    }
+    .contentBtn {
+        i {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        span {
+            font-size: 14px;
+        }
+    }
+    .mainContent {
+        .el-table .warning-row {
+            background: oldlace;
+        }
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+        .cell{
+            text-align: center;
+            color: #000;
+        }
     }
 }

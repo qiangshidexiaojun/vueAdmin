@@ -8,7 +8,7 @@
     export default {
         data() {
             return {
-                msg: "购物车组件"
+                msg: "分类页面"
             }
         },
     }

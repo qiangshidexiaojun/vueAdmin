@@ -59,7 +59,7 @@ export default {
           });
           localStorage.setItem("uname", res.data.message.uname);
           /* 路由跳转，也可以使用replace */
-          this.$router.push({ name: "admin" });
+          this.$router.push({ name: "goodsList" });
         } else {
           Message.error({
             message: res.data.message,
