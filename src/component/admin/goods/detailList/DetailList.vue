@@ -8,7 +8,7 @@
     export default {
         data() {
             return {
-                msg: "评论页面"
+                msg: "详情页面"
             }
         },
     }

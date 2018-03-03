@@ -62,7 +62,6 @@ export default {
           submenu: [
             { text: "内容管理", path: "/admin/goods/list" },
             { text: "类别管理", path: "/admin/goods/categoryList" },
-            { text: "评论管理", path: "/admin/goods/commentList" }
           ]
         },
         {
