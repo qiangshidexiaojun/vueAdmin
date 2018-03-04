@@ -26,9 +26,13 @@
                 <el-row>
                     <el-col :span="8">
                         <el-form-item label="所属类别" prop="region">
-                            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+                            <el-select v-model="form.category_id" placeholder="请选择">
+                                <el-option v-for="item in category" :key="item.category_id" :label="item.title" :value="item.category_id">
+                                    <span>
+                                        <span v-if="item.class_layer != 1">|-</span>
+                                        <span>{{item.title}}</span>
+                                    </span>
+                                </el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -57,7 +61,7 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="上传封面">
-                            <el-upload class="upload-demo" action="http://localhost:8899/admin/article/uploadimg" :file-list="form.imgList" list-type="picture" :on-success="uploadImg">
+                            <el-upload class="upload-demo" action="http://localhost:8899/admin/article/uploadimg" :file-list="form.imgList" list-type="picture" :on-success="uploadImg" :on-remove="removeImg">
                                 <el-button size="small" type="primary">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
@@ -65,7 +69,7 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="上传附件">
-                            <el-upload class="upload-demo" action="http://localhost:8899/admin/article/uploadfile" :file-list="form.fileList" multiple :on-success="uploadFile">
+                            <el-upload class="upload-demo" action="http://localhost:8899/admin/article/uploadfile" :file-list="form.fileList" multiple :on-success="uploadFile" :on-remove="removeFile">
                                 <el-button size="small" type="primary">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
@@ -105,7 +109,7 @@
                 </template>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm')">提交保存</el-button>
+                    <el-button type="primary" @click="submitForm()">提交保存</el-button>
                     <el-button @click="$router.go(-1)">返回上一页</el-button>
                 </el-form-item>
             </el-form>
@@ -114,42 +118,78 @@
 </template>
 
 <script>
+import { Message } from "element-ui";
 export default {
   data() {
     return {
-      id: "",
-      form: {
-        fileImgList: [],
-        fileList: []
-      },
+      id: this.$route.params.id,
+      form: {},
       ruleForm: {
-        name: ""
+        name: "",
+        region: ""
       },
       rules: {
-        name: [{ required: true, message: "请输入标题", trigger: "blur" }]
-      }
+        name: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        region: [{ required: true, message: "请选择类别", trigger: "blur" }]
+      },
+      category: []
     };
   },
   methods: {
     /* 提交按钮 */
-    submitForm(formName) {},
+    submitForm() {
+      this.$http.post(this.$api.gsEdit + this.id, this.form).then(res => {
+        if (res.data.status == 0) {
+          Message.success({
+            message: `保存成功`,
+            duration: 1000
+          });
+        } else if (rea.data.status == 1) {
+          Message.error({
+            message: `保存失败`,
+            duration: 1000
+          });
+        }
+      });
+    },
+    /* 获取商品 */
     getGoods() {
       this.$http.get(this.$api.gsDetail + this.id).then(res => {
         if (res.data.status == 0) {
           this.form = res.data.message;
+          this.form.category_id = +this.form.category_id;
         }
       });
     },
+    /* 获取下拉列表 */
+    getUpList() {
+      this.$http.get(this.$api.ctList + "goods").then(res => {
+        if (res.data.status == 0) {
+          this.category = res.data.message;
+        }
+      });
+    },
+    /* 上传图片 */
     uploadImg(response) {
       this.form.imgList = [response];
     },
+    removeImg(file,fileList){
+        this.form.imgList = fileList;
+    },
+    /* 上傳文件 */
     uploadFile(response) {
       this.form.fileList.push(response);
+    },
+    /* 移出文件 */
+    removeFile(file,fileList){
+        this.form.fileList = fileList;
     }
   },
   created() {
-    this.id = this.$route.params.id;
+    /* 获取商品详细信息 */
     this.getGoods();
+    /* 获取下拉列表 */
+    this.getUpList();
   }
 };
 </script>

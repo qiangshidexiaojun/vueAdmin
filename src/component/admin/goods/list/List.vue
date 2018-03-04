@@ -65,7 +65,7 @@
                     </el-table-column>
                 </el-table>
                 <div class="block">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="apiQuery.pageIndex" :page-sizes="[2, 4, 6, 8]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="apiQuery.totalcount">
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="apiQuery.pageIndex" :page-sizes="[5,8,10]" :page-size="apiQuery.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="apiQuery.totalcount">
                     </el-pagination>
                 </div>
             </template>
@@ -166,7 +166,7 @@ export default {
       /* 商品查询数据 */
       apiQuery: {
         pageIndex: 1,
-        pageSize: 2,
+        pageSize: 5,
         searchvalue: "",
         totalcount: 0
       },

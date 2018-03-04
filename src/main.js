@@ -2,6 +2,9 @@ import Vue from "vue"//引入vue
 import App from "./component/App.vue"//引入根组件
 import vueRouter from "./router/index.js"//找到路由规则
 
+import routerGuard from "./router/guard.js"//导入路由守卫
+vueRouter.beforeEach(routerGuard)//启用路由守卫
+
 import ElementUI from 'element-ui'//引入ui组件
 import 'element-ui/lib/theme-chalk/index.css'//引入样式
 
@@ -14,7 +17,7 @@ import "./less/index.less" //引入全局less
 
 import Vuex from "vuex" //引入组件通信管理插件
 
-import { store } from './js/store.js' // 使用{}引入store实例，因为store是一个const变量
+import { store } from './js/store.js' // 使用{}引入store实例，因为store是一个const变量，vuex
 
 /* 导入富文本编辑样式 */
 import 'quill/dist/quill.core.css'
@@ -45,24 +48,3 @@ export default{
         quillEditor: VueQuillEditor
     }
 }
-
-vueRouter.beforeEach((to, from, next) => {
-    /* to要进入的路由 */
-    /* from要离开的路由 */
-    /* next调用这个方法才能执行后续操作 */
-    /* console.log(to);
-    console.log(from);
-    console.log(next);
-    next(); */
-    axios.get(api.islogin).then(res => {
-        if (to.path == "/login"){
-            next();
-        }  
-        if (to.path == "/admin" && from.path == "/login"){
-            location.href = "http://localhost:8080/#/login";
-        }
-        if (res.data.code == "logined") {
-            next();
-        } 
-    });
-})
