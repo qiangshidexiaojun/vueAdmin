@@ -3,36 +3,34 @@ import api from '../js/api.js';
 
 // 导出一个全局的路由守卫对象
 export default function (to, from, next) {
-
-    // 实现步骤:
-    // 1. 请求接口判断当前是否处于登陆状态(也可以通过cookie判断)
-    // 2. 通过to对象的name属性得知用户去往的页面
-    // 2.1 如果去往登陆页面
-    // 2.2 已登陆 -> 自动跳转到首页 -> 调next('/')
-    // 2.3 未登陆 -> 允许访问 -> 调next()
-    // 3.1 如果去往非登陆页面
-    // 3.2 已登陆 -> 允许访问 -> 调next()
-    // 3.3 未登陆 -> 自动跳转到登陆页 -> 调next('/login')
     axios.get(api.islogin).then(res => {
-        let logined = res.data.code == 'logined';
+        let isLogin = false;
 
-        // 去往登陆页
-        if (to.name === 'login') {
-            if (logined) {
-                next('/');
+        // 已登陆
+        if (res.data.code == 'logined') {
+            isLogin = true;
+        }
+
+        // 如果访问登陆页面
+        // 已登陆 => 为了用户友好体验, 自动跳转到后台管理
+        // 未登陆 => 允许访问登陆页面
+        if (to.name == 'login') {
+            if (isLogin) {
+                next({ name: 'admin' });
             } else {
                 next();
             }
         }
 
-        // 去往非登陆页
-        if (to.name !== 'login') {
-            if (logined) {
+        // 如果访问后台页面
+        // 已登陆 => 允许访问后台页面 
+        // 未登陆 => 禁止访问, 自动跳转到登陆页面
+        if (to.name != 'login') {
+            if (isLogin) {
                 next();
             } else {
-                next('/login');
+                next({ name: 'login' ,query: {next: to.fullPath}});
             }
         }
-
     });
 };

@@ -8,7 +8,7 @@
             </el-breadcrumb>
         </section>
         <section class="contentBtn">
-            <el-button plain icon="el-icon-plus" size="mini">新增</el-button>
+            <el-button plain icon="el-icon-plus" @click="add()" size="mini">新增</el-button>
             <el-button plain icon="el-icon-check" @click="all()" size="mini">全选</el-button>
             <el-button plain icon="el-icon-close" @click="open()" size="mini">删除</el-button>
             <el-input class="content_btn_search" @input="search()" v-model="apiQuery.searchvalue" placeholder="请输入搜索内容" prefix-icon="el-icon-search">
@@ -137,6 +137,11 @@ export default {
     /* 点击全选 */
     all() {
       document.querySelector(".el-checkbox__original").click();
+    },
+    /* 新增 */
+    add(){
+      /* 跳转到新增页面 */
+      this.$router.push({name: "goodsAdd"});
     },
     /* 刪除提示框 */
     open() {

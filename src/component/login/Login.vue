@@ -59,7 +59,8 @@ export default {
           });
           localStorage.setItem("uname", res.data.message.uname);
           /* 路由跳转，也可以使用replace */
-          this.$router.push({ name: "goodsList" });
+          var nextPage = this.$route.query.next || "/admin/goods/list";
+          this.$router.push({ path: nextPage });
         } else {
           Message.error({
             message: res.data.message,

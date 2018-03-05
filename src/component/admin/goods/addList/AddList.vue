@@ -5,14 +5,14 @@
                 <el-breadcrumb-item :to="{path: '/admin/goods/list'}">返回上一层</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{path: '/admin/'}">购物商城</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{path: '/admin'}">首页</el-breadcrumb-item>
-                <el-breadcrumb-item class="item-action">编辑商品</el-breadcrumb-item>
+                <el-breadcrumb-item class="item-action">添加商品</el-breadcrumb-item>
             </el-breadcrumb>
         </section>
         <section class="mainContent">
-            <el-form :model="ruleForm" label-position="right" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form :model="form" label-position="right" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-row>
                     <el-col :span="12">
-                        <el-form-item label="内容标题" prop="name" class="">
+                        <el-form-item label="内容标题" prop="title" class="">
                             <el-input v-model="form.title"></el-input>
                         </el-form-item>
                     </el-col>
@@ -25,7 +25,8 @@
 
                 <el-row>
                     <el-col :span="8">
-                        <el-form-item label="所属类别" prop="region">
+                        <el-form-item label="所属类别" prop="category_id">
+                            <!-- <input type="text" v-model="form.category_id"> -->
                             <el-select v-model="form.category_id" placeholder="请选择">
                                 <el-option v-for="item in category" :key="item.category_id" :label="item.title" :value="item.category_id">
                                     <span>
@@ -99,7 +100,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item label="内容摘要">
+                <el-form-item label="内容摘要" prop="zhaiyao">
                     <el-input type="textarea" v-model="form.zhaiyao"></el-input>
                 </el-form-item>
                 <template>
@@ -109,7 +110,7 @@
                 </template>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm()">提交保存</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">提交保存</el-button>
                     <el-button @click="$router.go(-1)">返回上一页</el-button>
                 </el-form-item>
             </el-form>
@@ -122,42 +123,64 @@ import { Message } from "element-ui";
 export default {
   data() {
     return {
-      id: this.$route.params.id,
-      form: {},
-      ruleForm: {
-        name: "",
-        region: ""
+      form: {
+        category_id: "",
+        content: "",
+        fileList: [],
+        goods_no: "",
+        imgList: [],
+        is_hot: false,
+        is_slide: false,
+        is_top: false,
+        market_price: 0,
+        sell_price: 0,
+        status: true,
+        stock_quantity: 0,
+        sub_title: "",
+        title: "",
+        zhaiyao: ""
       },
       rules: {
-        name: [{ required: true, message: "请输入标题", trigger: "blur" }],
-        region: [{ required: true, message: "请选择类别", trigger: "blur" }]
+        title: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        category_id: [
+          { required: true, message: "请选择类别", trigger: "blur" }
+        ],
+        zhaiyao: [
+          { required: true, message: "请输入摘要内容", trigger: "blur" }
+        ],
+        content: [
+          { required: true, message: "请输入详细内容", trigger: "blur" }
+        ]
       },
       category: []
     };
   },
   methods: {
     /* 提交按钮 */
-    submitForm() {
-      this.$http.post(this.$api.gsEdit + this.id, this.form).then(res => {
-        if (res.data.status == 0) {
-          Message.success({
-            message: `保存成功`,
-            duration: 1000
+    submitForm(ruleForm) {
+      this.$refs[ruleForm].validate(valid => {
+        /* 验证通过 */
+        if (valid) {
+          this.$http.post(this.$api.gsAdd, this.form).then(res => {
+            if (res.data.status == 0) {
+              Message.success({
+                message: `添加成功`,
+                duration: 1000
+              });
+              this.$router.go(-1);
+            } else if (res.data.status == 1) {
+              Message.error({
+                message: `添加失败`,
+                duration: 1000
+              });
+            }
           });
-        } else if (res.data.status == 1) {
+        } else {
           Message.error({
-            message: `保存失败`,
+            message: `验证失败`,
             duration: 1000
           });
-        }
-      });
-    },
-    /* 获取商品 */
-    getGoods() {
-      this.$http.get(this.$api.gsDetail + this.id).then(res => {
-        if (res.data.status == 0) {
-          this.form = res.data.message;
-          this.form.category_id = +this.form.category_id;
+          return false;
         }
       });
     },
@@ -173,21 +196,20 @@ export default {
     uploadImg(response) {
       this.form.imgList = [response];
     },
-    removeImg(file,fileList){
-        this.form.imgList = fileList;
+    /* 移出图片 */
+    removeImg(file, fileList) {
+      this.form.imgList = fileList;
     },
     /* 上傳文件 */
     uploadFile(response) {
       this.form.fileList.push(response);
     },
     /* 移出文件 */
-    removeFile(file,fileList){
-        this.form.fileList = fileList;
+    removeFile(file, fileList) {
+      this.form.fileList = fileList;
     }
   },
   created() {
-    /* 获取商品详细信息 */
-    this.getGoods();
     /* 获取下拉列表 */
     this.getUpList();
   }

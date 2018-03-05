@@ -1,23 +1,23 @@
 <template>
-    <div class="aside">
-        <el-menu :default-active="menu[4].title + menu[0].submenu[0].text" class="el-menu-vertical-demo"  @open="handleOpen" @close="handleClose" :collapse="checkContent" text-color="#fff" background-color="#267cb7" active-text-color="#ffd04b">
-            <el-submenu :index="item.title" v-for="item in menu" :key="item.title">
-                <template slot="title">
-                    <i class="el-icon-message"></i>
-                    <span slot="title">{{item.title}}</span>
-                </template>
-                <!-- nav_item -->
-                <el-menu-item-group v-for="itemContent in item.submenu" :key="itemContent.text">
-                    <router-link :to="itemContent.path">
-                        <el-menu-item :index="item.title+itemContent.text">
-                            <i class="el-icon-document"></i>
-                            <span>{{itemContent.text}}</span>
-                        </el-menu-item>
-                    </router-link>
-                </el-menu-item-group>
-            </el-submenu>
-        </el-menu>
-    </div>
+  <div class="aside">
+    <el-menu :default-active="menu[4].title + menu[0].submenu[0].text" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :unique-opened="true" :collapse="checkContent" text-color="#fff" background-color="#267cb7" active-text-color="#ffd04b">
+      <el-submenu :index="item.title" v-for="item in menu" :key="item.title">
+        <template slot="title">
+          <i class="el-icon-message"></i>
+          <span slot="title">{{item.title}}</span>
+        </template>
+        <!-- nav_item -->
+        <el-menu-item-group v-for="itemContent in item.submenu" :key="itemContent.text">
+          <router-link :to="itemContent.path">
+            <el-menu-item :index="item.title+itemContent.text">
+              <i class="el-icon-document"></i>
+              <span>{{itemContent.text}}</span>
+            </el-menu-item>
+          </router-link>
+        </el-menu-item-group>
+      </el-submenu>
+    </el-menu>
+  </div>
 </template>
 
 <script>
@@ -61,7 +61,7 @@ export default {
           title: "商品管理",
           submenu: [
             { text: "内容管理", path: "/admin/goods/list" },
-            { text: "类别管理", path: "/admin/goods/categoryList" },
+            { text: "类别管理", path: "/admin/goods/categoryList" }
           ]
         },
         {
@@ -79,10 +79,10 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      //   console.log(key, keyPath);
+      console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      //   console.log(key, keyPath);
+      console.log(key, keyPath);
     },
     handleSelect(index, indexPath) {
       console.log(index, indexPath);

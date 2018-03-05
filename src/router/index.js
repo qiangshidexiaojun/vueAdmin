@@ -8,7 +8,8 @@ import StudentComment from "../component/admin/student/comment/Comment.vue"//引
 import StudentContent from "../component/admin/student/content/Content.vue"//引入学员内容
 
 import GoodsCategory from "../component/admin/goods/categoryList/CategoryList.vue"//引入商品类别组件
-import GoodsDetail from "../component/admin/goods/detailList/DetailList.vue"//引入商品评论
+import GoodsDetail from "../component/admin/goods/detailList/DetailList.vue"//引入商品详细信息组件
+import GoodsAdd from "../component/admin/goods/addList/AddList.vue"//引入商品新增信息组件
 import GoodsList from "../component/admin/goods/list/List.vue"//引入商品列表
 
 /* 使用路由 */
@@ -23,6 +24,7 @@ const student = [
 const goods = [
     { name: "goodsCategory", path: 'goods/categoryList', component: GoodsCategory },
     { name: "goodsDetail", path: 'goods/detailList/:id', component: GoodsDetail },
+    { name: "goodsAdd", path: 'goods/addList', component: GoodsAdd },
     { name: "goodsList", path: 'goods/list', component: GoodsList }
 ];
 
