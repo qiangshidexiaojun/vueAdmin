@@ -6,7 +6,7 @@ import routerGuard from "./router/guard.js"//导入路由守卫
 vueRouter.beforeEach(routerGuard)//启用路由守卫
 
 import ElementUI from 'element-ui'//引入ui组件
-import 'element-ui/lib/theme-chalk/index.css'//引入样式
+// import 'element-ui/lib/theme-chalk/index.css'//引入样式
 
 import 'normalize.css'//引入初始化样式库
 
